@@ -5,50 +5,44 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.daxprotocol.core.annotation.DaxpTag;
 import org.daxprotocol.core.annotation.DaxpDic;
+
+import static com.daxprotocol.daxp_core_test.daxp.ApplicationDaxpTag.*;
 
 @DaxpDic(name = "Customer",  namespace = "crm")
 @Data
 @Entity
+@Builder
+@AllArgsConstructor
 public class Customer {
 
-
-
-
-    @DaxpTag(tag = 2001, uiLabel = "Id customer")
+    @DaxpTag(tag = CUSTOMER_ID, uiLabel = "Id customer")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long customerId;
 
-    public static final int FIRST_NAME =  2002;
-    @DaxpTag(tag = FIRST_NAME,uiLabel = "First name")
+    @DaxpTag(tag = CUSTOMER_FIRST_NAME,uiLabel = "First name")
     @NotNull
     String name;
 
-    public static final int SURNAME = 2003;
-    @DaxpTag(tag = SURNAME,uiLabel = "Surname")
+    @DaxpTag(tag = CUSTOMER_SURNAME,uiLabel = "Surname")
     String surname;
 
-    @DaxpTag(tag = 2004,uiLabel = "Email")
+    @DaxpTag(tag = CUSTOMER_EMAIL, uiLabel = "Email")
     String email;
 
-    @DaxpTag(tag = 2005 ,uiLabel = "Town")
+    @DaxpTag(tag = CUSTOMER_TOWN,uiLabel = "Town")
     String town;
 
-    @DaxpTag(tag = 2006,uiLabel = "Telephone")
+    @DaxpTag(tag = CUSTOMER_TELEPHONE, uiLabel = "Telephone")
     String telephone;
 
-    public Customer(  ){
-    }
-    public Customer(  String name){
-      this.name = name;
-    }
-
-    public Customer(Long customerId, String name) {
-        this.customerId = customerId;
-        this.name = name;
+    public Customer(){
     }
 
 }

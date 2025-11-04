@@ -4,6 +4,7 @@ import com.daxprotocol.daxp_core_test.contracts.Contract;
 import com.daxprotocol.daxp_core_test.customer.Customer;
 import com.daxprotocol.daxp_core_test.customer.CustomerRepository;
 import com.daxprotocol.daxp_core_test.daxp.AppDaxDictionary;
+import com.daxprotocol.daxp_core_test.daxp.ApplicationDaxpTag;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.head.DaxMsgType;
@@ -20,22 +21,18 @@ public class DaxpMsgDispatcher {
 
     public DaxMessage dispose(DaxMessage msg) {
         if (msg.getMsgType().compareTo(DaxMsgType.DIC_REQ) == 0) {
-
-            DaxMessage respMsg = factory.createDictionaryMsg(appDic);
-            return respMsg;
+            return factory.createDictionaryMsg(appDic);
         }
+
         if (msg.getMsgType().compareTo("UCDR") == 0) {
+            Long id = Long.valueOf(msg.getStrValue(ApplicationDaxpTag.CUSTOMER_ID));
+            Optional<Customer> customer = customerRepository.findById(id);
 
-            Long custId = Long.valueOf(msg.getBody().getPair(0,2001).getStrValue());
-
-            Optional<Customer> customer = customerRepository.findById(custId);
-
-            DaxMessage respMs;
             if (customer.isPresent()){
-                return         factory.toDaxMessage("UCD",customer.get());
+                return factory.toDaxMessage("UCD",customer.get());
             }
 
-            return  factory.createDictionaryReq(); //>>>test
+            return factory.createDictionaryReq(); //>>>TODO User Error
         }
 
         return null; //TODO bad request

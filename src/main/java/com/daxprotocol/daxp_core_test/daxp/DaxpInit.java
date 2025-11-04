@@ -34,7 +34,7 @@ public class DaxpInit {
             //Iterate over found classes
             for (BeanDefinition beanDef : beans) {
                 String className = beanDef.getBeanClassName();
-                System.out.println("Found annotated class: " + className);
+   //             System.out.println("Found annotated class: " + className);
 
                 // Optionally load class and inspect
                 Class<?> clazz = Class.forName(className);
