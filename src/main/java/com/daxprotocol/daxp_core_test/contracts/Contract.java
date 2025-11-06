@@ -1,5 +1,6 @@
 package com.daxprotocol.daxp_core_test.contracts;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,10 +11,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.daxprotocol.core.annotation.DaxpDic;
-import org.daxprotocol.core.annotation.DaxpTag;
+import org.daxprotocol.core.annotation.DaxpField;
+import org.daxprotocol.core.annotation.DaxpReference;
 
-import java.math.BigDecimal;
-import static com.daxprotocol.daxp_core_test.daxp.ApplicationDaxpTag.*;
+import static com.daxprotocol.daxp_core_test.daxp.AppDaxpTag.*;
 
 @DaxpDic(name = "Contract",namespace = "cnt")
 @Data
@@ -22,23 +23,29 @@ import static com.daxprotocol.daxp_core_test.daxp.ApplicationDaxpTag.*;
 @AllArgsConstructor
 public class Contract {
 
-    @DaxpTag(tag = CONTRACT_ID, uiLabel = "Id")
+    @DaxpField(tag = CONTRACT_ID, uiLabel = "Id")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
+    @DaxpReference(tag = CUSTOMER_ID)
+    Long customerId;
+
     @NotNull
-    @DaxpTag(tag = CONTRACT_NO,uiLabel = "Contract No")
+    @DaxpField(tag = CONTRACT_NO,uiLabel = "Contract No")
     @Size(min = 2, max = 20)
     String  contract_no;
 
     @NotNull
-    @DaxpTag(tag = CONTRACT_AMOUNT,uiLabel = "Amount")
-    BigDecimal amount;
+    @DaxpField(tag = CONTRACT_AMOUNT,uiLabel = "Amount")
+    Long amount;
 
-    @DaxpTag(tag = CONTRACT_STATUS,uiLabel = "Status")
+    @DaxpField(tag = CONTRACT_STATUS,uiLabel = "Status")
     Character status ;
 
-
+    @PostConstruct
+    private void postContract(){
+        status = 'I';
+    }
 
 }

@@ -33,6 +33,7 @@ public class DaxpRestController {
             return ResponseEntity.ok().body(messageCodec.encode(respMsg));
         }
         catch (Exception e) {
+            e.printStackTrace(); //FOR test
             return ResponseEntity.badRequest().build();
         }
     }

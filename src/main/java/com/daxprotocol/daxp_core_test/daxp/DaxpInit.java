@@ -1,4 +1,5 @@
 package com.daxprotocol.daxp_core_test.daxp;
+import jakarta.annotation.PostConstruct;
 import org.daxprotocol.core.annotation.DaxpDic;
 import org.daxprotocol.core.dictionary.DaxDictionaryManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ public class DaxpInit {
     @Autowired
     DaxDictionaryManager daxDicManager;
 
+    @PostConstruct
     public void daxpInitScanner(){
 
         try {

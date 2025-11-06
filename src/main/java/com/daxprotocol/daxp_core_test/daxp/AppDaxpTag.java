@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class ApplicationDaxpTag {
+public class AppDaxpTag {
     public static final int CUSTOMER_ID = 2001;
     public static final int CUSTOMER_FIRST_NAME = 2002;
     public static final int CUSTOMER_SURNAME = 2003;
