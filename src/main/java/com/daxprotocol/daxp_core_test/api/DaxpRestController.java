@@ -21,8 +21,8 @@ public class DaxpRestController {
     private ResponseEntity<String> requestFun(Map<String, String> params, String body){
         params.forEach((s, s2) -> System.out.println(s+"=>"+s2));
         DaxMessage message;
-        if (params.containsKey("msgType")){
-            message = new DaxMessage(  params.get("msgType"));
+        if (params.containsKey("msg_type")){
+            message = new DaxMessage(  params.get("msg_type"));
         }
         else {
             message = messageCodec.decode(body);
