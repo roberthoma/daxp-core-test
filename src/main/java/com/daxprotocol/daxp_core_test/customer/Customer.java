@@ -9,11 +9,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.annotation.DaxpDic;
+import org.daxprotocol.core.annotation.DaxpFieldGroup;
 
 import static com.daxprotocol.daxp_core_test.daxp.AppDaxpTag.*;
+import static com.daxprotocol.daxp_core_test.daxp.AppDaxpGroup.*;
 
-@DaxpDic(name = "Customer",  namespace = "crm")
+@DaxpFieldGroup(id = GROUP_CUSTOMER, name = "Customer",  namespace = "crm")
 @Data
 @Entity
 @Builder
@@ -40,6 +41,9 @@ public class Customer {
 
     @DaxpField(tag = CUSTOMER_TELEPHONE, uiLabel = "Telephone")
     String telephone;
+
+    @DaxpField(tag = CUSTOMER_TYPE, uiLabel = "type")
+    CustomerType type;
 
     public Customer(){
     }

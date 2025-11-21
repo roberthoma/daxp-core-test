@@ -6,8 +6,8 @@ import com.daxprotocol.daxp_core_test.daxp.AppDaxDictionary;
 import com.daxprotocol.daxp_core_test.daxp.AppDaxpTag;
 import org.daxprotocol.core.conventer.DaxMessageConverter;
 import org.daxprotocol.core.factory.DaxMessageFactory;
+import org.daxprotocol.core.field.DaxMsgType;
 import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.model.head.DaxMsgType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +21,7 @@ public class DaxpMsgDispatcher {
     @Autowired CustomerRepository customerRepository;
 
     public DaxMessage dispose(DaxMessage msg) {
+        //TODO add filter parameters
         if (msg.getMsgType().compareTo(DaxMsgType.DIC_REQ) == 0) {
             return factory.createDictionaryMsg(appDic);
         }
@@ -44,9 +45,27 @@ public class DaxpMsgDispatcher {
 
         }
         if (msg.getMsgType().compareTo(AppMessage.CRM_INSERT) == 0) {
-            Customer customer = DaxMessageConverter.fromMessage(msg,Customer.class);
+            Customer customer = DaxMessageConverter.createFromMessage(msg,Customer.class);
             return factory.toDaxMessage(AppMessage.CRM_DATA, customerRepository.save(customer));
         }
+
+        if (msg.getMsgType().compareTo(AppMessage.CRM_UPDATE) == 0) {
+            Long customerId = Long.parseLong(msg.getStrValue(AppDaxpTag.CUSTOMER_ID));
+
+            Optional<Customer> customerOpt = customerRepository.findById(customerId);
+            if(customerOpt.isEmpty()){
+                return factory.errorResourceNotFound();
+            }
+
+            customerOpt.ifPresent(c -> {
+                        DaxMessageConverter.setFromMessage(msg, c);
+                        customerRepository.save(c);
+                    }
+            );
+
+            return factory.okMessageType();
+        }
+
 
         return factory.errorInvalidMessageType(); //TODO in daxp-core define exception
 

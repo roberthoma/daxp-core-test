@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.daxprotocol'
-version = '0.1.0'
+version = '0.2.0'
 description = 'Daxp Test 01'
 
 java {
@@ -36,7 +36,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    implementation files('../daxp-core/build/libs/daxp-core-0.1.0.jar');
+    implementation files('../daxp-core/build/libs/daxp-core-0.2.0.jar');
 }
 
 tasks.named('test') {

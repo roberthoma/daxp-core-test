@@ -1,6 +1,6 @@
 package com.daxprotocol.daxp_core_test.daxp;
 import jakarta.annotation.PostConstruct;
-import org.daxprotocol.core.annotation.DaxpDic;
+import org.daxprotocol.core.annotation.DaxpFieldGroup;
 import org.daxprotocol.core.dictionary.DaxDictionaryManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -26,7 +26,7 @@ public class DaxpInit {
                     new ClassPathScanningCandidateComponentProvider(false);
 
             //Add a filter for your annotation
-            scanner.addIncludeFilter(new AnnotationTypeFilter(DaxpDic.class));
+            scanner.addIncludeFilter(new AnnotationTypeFilter(DaxpFieldGroup.class));
 
             //Define the base package(s) to scan
             String basePackage = "com.daxprotocol.daxp_core_test";
@@ -36,13 +36,9 @@ public class DaxpInit {
             //Iterate over found classes
             for (BeanDefinition beanDef : beans) {
                 String className = beanDef.getBeanClassName();
-   //             System.out.println("Found annotated class: " + className);
-
                 // Optionally load class and inspect
                 Class<?> clazz = Class.forName(className);
-                if (clazz.isAnnotationPresent(DaxpDic.class)) {
-//                    System.out.println("Annotation value: " +
-//                            clazz.getAnnotation(DaxpDic.class).name());
+                if (clazz.isAnnotationPresent(DaxpFieldGroup.class)) {
                     daxDicManager.populateFromAnnotations(dic,clazz);
                 }
             }

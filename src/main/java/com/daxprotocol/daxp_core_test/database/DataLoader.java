@@ -4,6 +4,7 @@ import com.daxprotocol.daxp_core_test.contracts.Contract;
 import com.daxprotocol.daxp_core_test.contracts.ContractRepository;
 import com.daxprotocol.daxp_core_test.customer.Customer;
 import com.daxprotocol.daxp_core_test.customer.CustomerRepository;
+import com.daxprotocol.daxp_core_test.customer.CustomerType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,7 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        customerRepo.save(Customer.builder().name("John").build());
+        customerRepo.save(Customer.builder().name("John").type(CustomerType.INDIVIDUAL).build());
         customerRepo.save(Customer.builder().name("Anna").email("anna@wp.pl").telephone("+48 123 456 789").build());
         customerRepo.save(Customer.builder().name("Robert").surname("Homa").email("robert.homa@daxprotocol.org").build());
 

@@ -10,13 +10,14 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.daxprotocol.core.annotation.DaxpDic;
 import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.annotation.DaxpReference;
+import org.daxprotocol.core.annotation.DaxpFieldGroup;
+import org.daxprotocol.core.annotation.DaxpFieldReference;
 
 import static com.daxprotocol.daxp_core_test.daxp.AppDaxpTag.*;
+import static com.daxprotocol.daxp_core_test.daxp.AppDaxpGroup.*;
 
-@DaxpDic(name = "Contract",namespace = "cnt")
+@DaxpFieldGroup(id = GROUP_CONTRACT , name = "Contract",namespace = "cnt")
 @Data
 @Entity
 @Builder
@@ -28,7 +29,7 @@ public class Contract {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
-    @DaxpReference(tag = CUSTOMER_ID)
+    @DaxpFieldReference(tag = CUSTOMER_ID)
     Long customerId;
 
     @NotNull

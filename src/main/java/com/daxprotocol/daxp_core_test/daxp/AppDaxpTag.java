@@ -11,6 +11,7 @@ public class AppDaxpTag {
     public static final int CUSTOMER_EMAIL = 2004;
     public static final int CUSTOMER_TOWN = 2005;
     public static final int CUSTOMER_TELEPHONE = 2006;
+    public static final int CUSTOMER_TYPE = 2007;
 
 
     public static final int CONTRACT_ID = 2201;
