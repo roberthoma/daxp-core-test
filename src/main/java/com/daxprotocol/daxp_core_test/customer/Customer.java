@@ -8,41 +8,40 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.annotation.DaxpFieldGroup;
 
-import static com.daxprotocol.daxp_core_test.daxp.AppDaxpTag.*;
-import static com.daxprotocol.daxp_core_test.daxp.AppDaxpGroup.*;
+import static com.daxprotocol.daxp_core_test.daxp.CRMDaxpRegister.*;
 
-@DaxpFieldGroup(id = GROUP_CUSTOMER, name = "Customer",  namespace = "crm")
 @Data
 @Entity
 @Builder
 @AllArgsConstructor
+@DaxpEntity(tagId = CUSTOMER_ENTITY, name = "Customer")
 public class Customer {
 
-    @DaxpField(tag = CUSTOMER_ID, uiLabel = "Id customer")
+    @DaxpField(tagId = CUSTOMER_ID)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long customerId;
 
-    @DaxpField(tag = CUSTOMER_FIRST_NAME,uiLabel = "First name")
+    @DaxpField(tagId = CUSTOMER_FIRST_NAME)
     @NotNull
     String name;
 
-    @DaxpField(tag = CUSTOMER_SURNAME,uiLabel = "Surname")
+    @DaxpField(tagId = CUSTOMER_SURNAME)
     String surname;
 
-    @DaxpField(tag = CUSTOMER_EMAIL, uiLabel = "Email")
+    @DaxpField(tagId = CUSTOMER_EMAIL)
     String email;
 
-    @DaxpField(tag = CUSTOMER_TOWN,uiLabel = "Town")
+    @DaxpField(tagId = CUSTOMER_TOWN)
     String town;
 
-    @DaxpField(tag = CUSTOMER_TELEPHONE, uiLabel = "Telephone")
+    @DaxpField(tagId = CUSTOMER_TELEPHONE)
     String telephone;
 
-    @DaxpField(tag = CUSTOMER_TYPE, uiLabel = "type")
+    @DaxpField(tagId = CUSTOMER_TYPE)
     CustomerType type;
 
     public Customer(){

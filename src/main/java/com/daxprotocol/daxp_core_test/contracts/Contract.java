@@ -1,5 +1,6 @@
 package com.daxprotocol.daxp_core_test.contracts;
 
+import com.daxprotocol.daxp_core_test.daxp.CRMDaxpRegister;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,38 +11,35 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.annotation.DaxpFieldGroup;
-import org.daxprotocol.core.annotation.DaxpFieldReference;
 
-import static com.daxprotocol.daxp_core_test.daxp.AppDaxpTag.*;
-import static com.daxprotocol.daxp_core_test.daxp.AppDaxpGroup.*;
-
-@DaxpFieldGroup(id = GROUP_CONTRACT , name = "Contract",namespace = "cnt")
+import static com.daxprotocol.daxp_core_test.daxp.CRMDaxpRegister.*;
+@DaxpEntity( tagId = CONTRACT_TAG  ,name = "Contract")
 @Data
 @Entity
 @Builder
 @AllArgsConstructor
 public class Contract {
 
-    @DaxpField(tag = CONTRACT_ID, uiLabel = "Id")
+    @DaxpField(tagId = CONTRACT_ID)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
-    @DaxpFieldReference(tag = CUSTOMER_ID)
+    @DaxpField(tagId = CUSTOMER_ID)
     Long customerId;
 
     @NotNull
-    @DaxpField(tag = CONTRACT_NO,uiLabel = "Contract No")
+    @DaxpField(tagId = CONTRACT_NO)
     @Size(min = 2, max = 20)
     String  contract_no;
 
     @NotNull
-    @DaxpField(tag = CONTRACT_AMOUNT,uiLabel = "Amount")
+    @DaxpField(tagId = CONTRACT_AMOUNT)
     Long amount;
 
-    @DaxpField(tag = CONTRACT_STATUS,uiLabel = "Status")
+    @DaxpField(tagId = CONTRACT_STATUS)
     Character status ;
 
     @PostConstruct
