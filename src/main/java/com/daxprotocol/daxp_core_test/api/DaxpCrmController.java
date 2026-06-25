@@ -8,12 +8,13 @@ import org.daxprotocol.core.annotation.DaxpHandler;
 import org.daxprotocol.core.application.DaxEngine;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.DaxMessage;
+import org.daxprotocol.core.model.tag.DaxTag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
-
+import static com.daxprotocol.daxp_core_test.daxp.CRMDaxpRegister.*;
 @DaxpController
 @Component
 public class DaxpCrmController {
@@ -22,7 +23,26 @@ public class DaxpCrmController {
 
     @DaxpHandler(CRMDaxpRegister.CRM_DATA_REQ)
     public void getBaseCrmData(DaxFrame incomeFrame, DaxFrame outcomeFrame){
-        System.out.println("tetette handler");
+        DaxMessage msg = incomeFrame.getFirstMessage();
+        int contextId = daxEngine.getConfig().getAppContextId();
+        DaxTag customerIdTag = DaxTag.of(101,CUSTOMER_ID);
+
+        if (msg.containsField(0, customerIdTag)){
+            Long customerId = Long.valueOf(  msg.get(0, customerIdTag).getIntegerValue());
+
+            Optional<Customer> customerById = customerRepository.findById(customerId);
+            if (customerById.isPresent()){
+                DaxMessage message = daxEngine.getMessageFactory()
+                                              .toDaxMessage(CRMDaxpRegister.CRM_DATA,customerById.get());
+                outcomeFrame.addMessage(message);
+                outcomeFrame.addMessage(daxEngine.getMessageFactory().okMessageType());
+            }
+            else {
+                outcomeFrame.addMessage(daxEngine.getMessageFactory().errorInvalidMessageType());
+            }
+
+            return;
+        }
 
         List<Customer> customerList = customerRepository.findAll();
         //Optional<Customer> customerList = customerRepository.findById(2L);
@@ -33,4 +53,31 @@ public class DaxpCrmController {
         }
 
     }
-}
+
+
+    @DaxpHandler(CRM_DELETE)
+    public void deleteCustomer(DaxFrame incomeFrame, DaxFrame outcomeFrame){
+        DaxMessage msg = incomeFrame.getFirstMessage();
+        int contextId = daxEngine.getConfig().getAppContextId();
+        DaxTag customerIdTag = DaxTag.of(101,CUSTOMER_ID);
+
+        if (msg.containsField(0, customerIdTag)){
+            Long customerId = Long.valueOf(  msg.get(0, customerIdTag).getIntegerValue());
+
+            Optional<Customer> customerById = customerRepository.findById(customerId);
+            if (customerById.isPresent()){
+
+                customerRepository.deleteById(customerId);
+                outcomeFrame.addMessage(daxEngine.getMessageFactory().okMessageType());
+            }
+            else {
+                outcomeFrame.addMessage(daxEngine.getMessageFactory().errorInvalidMessageType());
+            }
+
+        }
+
+    }
+
+
+
+    }

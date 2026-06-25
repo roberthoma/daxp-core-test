@@ -41,7 +41,7 @@ public class CRMDaxpRegister {
     public static final String  CRM_INSERT       =  "CRM.NEW";
 
     @DaxpMsg(description = "Update Customer")
-    public static final String  CRM_UPDATE       =  "CRM.SET";
+    public static final String  CRM_UPDATE       =  "CRM.UPDATE";
 
     @DaxpMsg(description = "Delete Customer")
     public static final String  CRM_DELETE       =  "CRM.DELETE";

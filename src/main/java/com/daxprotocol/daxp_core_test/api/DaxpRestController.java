@@ -22,6 +22,7 @@ public class DaxpRestController {
         //TODO create frame from params if body is null
         DaxFrame reqFrame = daxEngine.getFrameParser().parseFrame(body);
         DaxFrame respFrame = new DaxFrame();
+
         respFrame.setPreamble(daxEngine.getPreambleFactory().createRespPreamble(reqFrame));
 
         daxEngine.getHandlerRegistry().executor(reqFrame,respFrame);
@@ -31,7 +32,7 @@ public class DaxpRestController {
         }
         catch (Exception e) {
                 e.printStackTrace(); //FOR test
-                return ResponseEntity.badRequest().build();
+                return ResponseEntity.badRequest().build();  //TODO return by DAXP error
             }
     }
 
