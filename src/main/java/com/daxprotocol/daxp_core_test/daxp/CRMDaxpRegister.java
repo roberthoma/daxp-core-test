@@ -40,7 +40,7 @@ public class CRMDaxpRegister {
     @DaxpMsg(description = "New Customer")
     public static final String  CRM_INSERT       =  "CRM.NEW";
 
-    @DaxpMsg(description = "Update Customer")
+    @DaxpMsg(description = "Update Customer", reqTag = {"2001"} )
     public static final String  CRM_UPDATE       =  "CRM.UPDATE";
 
     @DaxpMsg(description = "Delete Customer")

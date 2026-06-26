@@ -14,8 +14,7 @@ public class DaxpTestConfiguration {
     @Bean
     DaxEngine  getDaxEngine() {
       return new  DaxEngine(DaxpConfigFactory
-                .createConfig(DaxpConfigFactory
-                        .createProperties("daxp.properties")));
+                        .createProperties("daxp.properties"));
 
     }
 

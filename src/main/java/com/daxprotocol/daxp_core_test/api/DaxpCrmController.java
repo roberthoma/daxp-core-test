@@ -5,6 +5,7 @@ import com.daxprotocol.daxp_core_test.customer.CustomerRepository;
 import com.daxprotocol.daxp_core_test.daxp.CRMDaxpRegister;
 import org.daxprotocol.core.annotation.DaxpController;
 import org.daxprotocol.core.annotation.DaxpHandler;
+import org.daxprotocol.core.annotation.DaxpMsg;
 import org.daxprotocol.core.application.DaxEngine;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.DaxMessage;
@@ -25,7 +26,7 @@ public class DaxpCrmController {
     public void getBaseCrmData(DaxFrame incomeFrame, DaxFrame outcomeFrame){
         DaxMessage msg = incomeFrame.getFirstMessage();
         int contextId = daxEngine.getConfig().getAppContextId();
-        DaxTag customerIdTag = DaxTag.of(101,CUSTOMER_ID);
+        DaxTag customerIdTag = DaxTag.of(contextId,CUSTOMER_ID);
 
         if (msg.containsField(0, customerIdTag)){
             Long customerId = Long.valueOf(  msg.get(0, customerIdTag).getIntegerValue());
@@ -48,7 +49,7 @@ public class DaxpCrmController {
         //Optional<Customer> customerList = customerRepository.findById(2L);
 
         for (Customer customer : customerList){
-            DaxMessage message = daxEngine.getMessageFactory().toDaxMessage("CRM.DATA",customer);
+            DaxMessage message = daxEngine.getMessageFactory().toDaxMessage(CRMDaxpRegister.CRM_DATA,customer);
             outcomeFrame.addMessage(message);
         }
 
@@ -59,7 +60,7 @@ public class DaxpCrmController {
     public void deleteCustomer(DaxFrame incomeFrame, DaxFrame outcomeFrame){
         DaxMessage msg = incomeFrame.getFirstMessage();
         int contextId = daxEngine.getConfig().getAppContextId();
-        DaxTag customerIdTag = DaxTag.of(101,CUSTOMER_ID);
+        DaxTag customerIdTag = DaxTag.of(contextId,CUSTOMER_ID);
 
         if (msg.containsField(0, customerIdTag)){
             Long customerId = Long.valueOf(  msg.get(0, customerIdTag).getIntegerValue());
@@ -78,6 +79,35 @@ public class DaxpCrmController {
 
     }
 
+    @DaxpHandler(CRM_UPDATE)
+    public void updateCustomer(DaxFrame incomeFrame, DaxFrame outcomeFrame){
+        DaxMessage msg = incomeFrame.getFirstMessage();
+        int contextId = daxEngine.getConfig().getAppContextId();
+        DaxTag customerIdTag = DaxTag.of(contextId,CUSTOMER_ID);
 
+        if (msg.containsField(0, customerIdTag)){
+            Long customerId = Long.valueOf(  msg.get(0, customerIdTag).getIntegerValue());
+
+            Optional<Customer> customerById = customerRepository.findById(customerId);
+            if (customerById.isPresent()){
+
+                Customer customer = customerById.get();
+
+                daxEngine.getMessageConverter().updateFromMessage(msg, customer);
+
+                customerRepository.save(customer);
+
+            outcomeFrame.addMessage(daxEngine.getMessageFactory().okMessageType());
+            }
+            else {
+                outcomeFrame.addMessage(daxEngine.getMessageFactory().errorInvalidMessageType());
+            }
+
+        }
 
     }
+
+
+
+
+}

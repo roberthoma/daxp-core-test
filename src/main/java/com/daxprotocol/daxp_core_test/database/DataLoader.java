@@ -26,6 +26,9 @@ public class DataLoader implements CommandLineRunner {
         customerRepo.save(Customer.builder().name("John").type(CustomerType.INDIVIDUAL).build());
         customerRepo.save(Customer.builder().name("Anna").email("anna@wp.pl").telephone("+48 123 456 789").build());
         customerRepo.save(Customer.builder().name("Robert").surname("Homa").email("robert.homa@daxprotocol.org").build());
+        customerRepo.save(Customer.builder().name("MBank").type(CustomerType.ORGANIZATION).build());
+        customerRepo.save(Customer.builder().name("Adam").email("anna@wp.pl").telephone("+48 453646").build());
+        customerRepo.save(Customer.builder().name("Kasia").surname("Nowak").email("kasia.nowak@daxprotocol.org").build());
 
         contractRepository.save(Contract.builder().contract_no("1234567876").amount(2000L).customerId(1L).build());
         contractRepository.save(Contract.builder().contract_no("2345678767").amount(4000L).customerId(1L).build());
