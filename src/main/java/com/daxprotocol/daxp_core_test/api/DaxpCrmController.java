@@ -107,6 +107,22 @@ public class DaxpCrmController {
 
     }
 
+    @DaxpHandler(CRM_INSERT)
+    public void insertCustomer(DaxFrame incomeFrame, DaxFrame outcomeFrame){
+        DaxMessage msg = incomeFrame.getFirstMessage();
+        int contextId = daxEngine.getConfig().getAppContextId();
+//        DaxTag customerIdTag = DaxTag.of(contextId,CUSTOMER_ID);
+
+
+            Customer customer = daxEngine.getMessageConverter()
+                                         .createFromMessage(msg, Customer.class, 0);
+            customerRepository.save(customer);
+
+            outcomeFrame.addMessage(daxEngine.getMessageFactory().okMessageType());
+
+        }
+
+
 
 
 

@@ -30,6 +30,7 @@ public class Customer {
     String name;
 
     @DaxpField(tagId = CUSTOMER_SURNAME)
+  //  @NotNull
     String surname;
 
     @DaxpField(tagId = CUSTOMER_EMAIL)

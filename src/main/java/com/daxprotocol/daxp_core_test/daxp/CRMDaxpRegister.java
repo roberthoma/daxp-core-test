@@ -28,6 +28,7 @@ public class CRMDaxpRegister {
     public static final int CONTRACT_NO = 3203;
     public static final int CONTRACT_AMOUNT = 3202;
     public static final int CONTRACT_STATUS = 3205;
+    public static final int TEST_COLLECTION_ENUM_6001 = 6001;
 
 
     @DaxpMsg(description = "Customer Data")
@@ -46,6 +47,5 @@ public class CRMDaxpRegister {
     @DaxpMsg(description = "Delete Customer")
     public static final String  CRM_DELETE       =  "CRM.DELETE";
 
-    public static final int TEST_COLLECTION_ENUM_6001 = 6001;
 
 }

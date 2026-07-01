@@ -21,6 +21,7 @@ configurations {
 }
 
 repositories {
+	mavenLocal()
 	mavenCentral()
 }
 
@@ -36,7 +37,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    implementation files('../daxp-core/build/libs/daxp-core-0.7.1.jar');
+
+	implementation 'org.daxprotocol:daxp-core:0.7.1-beta'
+
 }
 
 tasks.named('test') {
