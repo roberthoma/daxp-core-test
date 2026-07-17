@@ -16,9 +16,8 @@ For full protocol specification and theoretical fundamentals, please visit [daxp
 Clone the repository and spin up the local test server:
 
 ```bash
-git clone https://github.com
-cd daxp-core-test
-mvn spring-boot:run
+git clone git@github.com:roberthoma/daxp-core-test.git
+
 ```
 The server will start locally on `http://localhost:8080`.
 
