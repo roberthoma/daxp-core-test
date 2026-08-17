@@ -23,13 +23,13 @@ public class DaxpCrmController {
     @Autowired DaxEngine daxEngine;
 
     @DaxpHandler(CRMDaxpRegister.CRM_DATA_REQ)
-    public void getBaseCrmData(DaxFrame incomeFrame, DaxFrame outcomeFrame){
-        DaxMessage msg = incomeFrame.getFirstMessage();
+    public void getBaseCrmData(DaxMessage incomeMsg , DaxFrame outcomeFrame){
+
         int namespaceId = daxEngine.getConfig().getAppNamespaceId();
         DaxTag customerIdTag = DaxTag.of(namespaceId,CUSTOMER_ID);
 
-        if (msg.containsField(0, customerIdTag)){
-            Long customerId = Long.valueOf(  msg.get(0, customerIdTag).getIntegerValue());
+        if (incomeMsg.containsField(0, customerIdTag)){
+            Long customerId = Long.valueOf(  incomeMsg.get(0, customerIdTag).getIntegerValue());
 
             Optional<Customer> customerById = customerRepository.findById(customerId);
             if (customerById.isPresent()){
@@ -59,13 +59,12 @@ public class DaxpCrmController {
 
 
     @DaxpHandler(CRM_DELETE)
-    public void deleteCustomer(DaxFrame incomeFrame, DaxFrame outcomeFrame){
-        DaxMessage msg = incomeFrame.getFirstMessage();
+    public void deleteCustomer(DaxMessage incomeMsg, DaxFrame outcomeFrame){
         int namespaceId = daxEngine.getConfig().getAppNamespaceId();
         DaxTag customerIdTag = DaxTag.of(namespaceId,CUSTOMER_ID);
 
-        if (msg.containsField(0, customerIdTag)){
-            Long customerId = Long.valueOf(  msg.get(0, customerIdTag).getIntegerValue());
+        if (incomeMsg.containsField(0, customerIdTag)){
+            Long customerId = Long.valueOf(  incomeMsg.get(0, customerIdTag).getIntegerValue());
 
             Optional<Customer> customerById = customerRepository.findById(customerId);
             if (customerById.isPresent()){
@@ -82,20 +81,20 @@ public class DaxpCrmController {
     }
 
     @DaxpHandler(CRM_UPDATE)
-    public void updateCustomer(DaxFrame incomeFrame, DaxFrame outcomeFrame){
-        DaxMessage msg = incomeFrame.getFirstMessage();
+    public void updateCustomer(DaxMessage incomeMsg, DaxFrame outcomeFrame){
+
         int namespaceId = daxEngine.getConfig().getAppNamespaceId();
         DaxTag customerIdTag = DaxTag.of(namespaceId,CUSTOMER_ID);
 
-        if (msg.containsField(0, customerIdTag)){
-            Long customerId = Long.valueOf(  msg.get(0, customerIdTag).getIntegerValue());
+        if (incomeMsg.containsField(0, customerIdTag)){
+            Long customerId = Long.valueOf(  incomeMsg.get(0, customerIdTag).getIntegerValue());
 
             Optional<Customer> customerById = customerRepository.findById(customerId);
             if (customerById.isPresent()){
 
                 Customer customer = customerById.get();
 
-                daxEngine.getMessageConverter().updateFromMessage(msg, customer);
+                daxEngine.getMessageConverter().updateFromMessage(incomeMsg, customer);
 
                 customerRepository.save(customer);
 
@@ -110,16 +109,19 @@ public class DaxpCrmController {
     }
 
     @DaxpHandler(CRM_INSERT)
-    public void insertCustomer(DaxFrame incomeFrame, DaxFrame outcomeFrame){
-        //TODO incomeFrame.getFirstMessage(); change to loop after list msgs in frame....
-        DaxMessage msg = incomeFrame.getFirstMessage();
+    public void insertCustomer(DaxMessage incomeMsg, DaxFrame outcomeFrame){
+
         int namespaceId = daxEngine.getConfig().getAppNamespaceId();
 //        DaxTag customerIdTag = DaxTag.of(contextId,CUSTOMER_ID);
 
 
             Customer customer = daxEngine.getMessageConverter()
-                                         .createFromMessage(msg, Customer.class);
-            customerRepository.save(customer);
+                                         .createFromMessage(incomeMsg, Customer.class);
+            Customer after = customerRepository.save(customer);
+
+            outcomeFrame.addMessage(daxEngine.getMessageFactory()
+                                             .toDaxMessage(CRMDaxpRegister.CRM_DATA,after));
+
 
             outcomeFrame.addMessage(daxEngine.getMessageFactory().okMessage());
 
