@@ -25,8 +25,8 @@ public class DaxpCrmController {
     @DaxpHandler(CRMDaxpRegister.CRM_DATA_REQ)
     public void getBaseCrmData(DaxFrame incomeFrame, DaxFrame outcomeFrame){
         DaxMessage msg = incomeFrame.getFirstMessage();
-        int contextId = daxEngine.getConfig().getAppContextId();
-        DaxTag customerIdTag = DaxTag.of(contextId,CUSTOMER_ID);
+        int namespaceId = daxEngine.getConfig().getAppNamespaceId();
+        DaxTag customerIdTag = DaxTag.of(namespaceId,CUSTOMER_ID);
 
         if (msg.containsField(0, customerIdTag)){
             Long customerId = Long.valueOf(  msg.get(0, customerIdTag).getIntegerValue());
@@ -36,7 +36,9 @@ public class DaxpCrmController {
                 DaxMessage message = daxEngine.getMessageFactory()
                                               .toDaxMessage(CRMDaxpRegister.CRM_DATA,customerById.get());
                 outcomeFrame.addMessage(message);
-                outcomeFrame.addMessage(daxEngine.getMessageFactory().okMessageType());
+                outcomeFrame.addMessage(daxEngine.getMessageFactory().okMessage());
+                outcomeFrame.addMessage(daxEngine.getMessageFactory().logMessage(2,"Any log from TEST APP"));
+
             }
             else {
                 outcomeFrame.addMessage(daxEngine.getMessageFactory().errorInvalidMessageType());
@@ -59,8 +61,8 @@ public class DaxpCrmController {
     @DaxpHandler(CRM_DELETE)
     public void deleteCustomer(DaxFrame incomeFrame, DaxFrame outcomeFrame){
         DaxMessage msg = incomeFrame.getFirstMessage();
-        int contextId = daxEngine.getConfig().getAppContextId();
-        DaxTag customerIdTag = DaxTag.of(contextId,CUSTOMER_ID);
+        int namespaceId = daxEngine.getConfig().getAppNamespaceId();
+        DaxTag customerIdTag = DaxTag.of(namespaceId,CUSTOMER_ID);
 
         if (msg.containsField(0, customerIdTag)){
             Long customerId = Long.valueOf(  msg.get(0, customerIdTag).getIntegerValue());
@@ -69,7 +71,7 @@ public class DaxpCrmController {
             if (customerById.isPresent()){
 
                 customerRepository.deleteById(customerId);
-                outcomeFrame.addMessage(daxEngine.getMessageFactory().okMessageType());
+                outcomeFrame.addMessage(daxEngine.getMessageFactory().okMessage());
             }
             else {
                 outcomeFrame.addMessage(daxEngine.getMessageFactory().errorInvalidMessageType());
@@ -82,8 +84,8 @@ public class DaxpCrmController {
     @DaxpHandler(CRM_UPDATE)
     public void updateCustomer(DaxFrame incomeFrame, DaxFrame outcomeFrame){
         DaxMessage msg = incomeFrame.getFirstMessage();
-        int contextId = daxEngine.getConfig().getAppContextId();
-        DaxTag customerIdTag = DaxTag.of(contextId,CUSTOMER_ID);
+        int namespaceId = daxEngine.getConfig().getAppNamespaceId();
+        DaxTag customerIdTag = DaxTag.of(namespaceId,CUSTOMER_ID);
 
         if (msg.containsField(0, customerIdTag)){
             Long customerId = Long.valueOf(  msg.get(0, customerIdTag).getIntegerValue());
@@ -97,7 +99,7 @@ public class DaxpCrmController {
 
                 customerRepository.save(customer);
 
-            outcomeFrame.addMessage(daxEngine.getMessageFactory().okMessageType());
+            outcomeFrame.addMessage(daxEngine.getMessageFactory().okMessage());
             }
             else {
                 outcomeFrame.addMessage(daxEngine.getMessageFactory().errorInvalidMessageType());
@@ -109,16 +111,17 @@ public class DaxpCrmController {
 
     @DaxpHandler(CRM_INSERT)
     public void insertCustomer(DaxFrame incomeFrame, DaxFrame outcomeFrame){
+        //TODO incomeFrame.getFirstMessage(); change to loop after list msgs in frame....
         DaxMessage msg = incomeFrame.getFirstMessage();
-        int contextId = daxEngine.getConfig().getAppContextId();
+        int namespaceId = daxEngine.getConfig().getAppNamespaceId();
 //        DaxTag customerIdTag = DaxTag.of(contextId,CUSTOMER_ID);
 
 
             Customer customer = daxEngine.getMessageConverter()
-                                         .createFromMessage(msg, Customer.class, 0);
+                                         .createFromMessage(msg, Customer.class);
             customerRepository.save(customer);
 
-            outcomeFrame.addMessage(daxEngine.getMessageFactory().okMessageType());
+            outcomeFrame.addMessage(daxEngine.getMessageFactory().okMessage());
 
         }
 

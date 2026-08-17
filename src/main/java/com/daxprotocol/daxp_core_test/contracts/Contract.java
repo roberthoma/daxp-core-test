@@ -1,6 +1,5 @@
 package com.daxprotocol.daxp_core_test.contracts;
 
-import com.daxprotocol.daxp_core_test.daxp.CRMDaxpRegister;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,7 +32,7 @@ public class Contract {
     @NotNull
     @DaxpField(tagId = CONTRACT_NO)
     @Size(min = 2, max = 20)
-    String  contract_no;
+    String contractNo;
 
     @NotNull
     @DaxpField(tagId = CONTRACT_AMOUNT)
@@ -46,5 +45,6 @@ public class Contract {
     private void postContract(){
         status = 'I';
     }
+    public Contract(){}
 
 }

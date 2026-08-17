@@ -44,8 +44,10 @@ public class DaxpInit {
             scanner.addIncludeFilter(new AnnotationTypeFilter(DaxpController.class));
 
 
-            DaxpCrmController  daxCtrl = appContext.getBean(DaxpCrmController.class);
+            DaxpCrmController  daxCtrl      = appContext.getBean(DaxpCrmController.class);
+            DaxpProtController daxpProtCtrl = appContext.getBean(DaxpProtController.class);
             daxEngine.getHandlerRegistry().registerCtrl(daxCtrl);
+            daxEngine.getHandlerRegistry().registerCtrl(daxpProtCtrl);
 
             //Define the base package(s) to scan
             String basePackage = "com.daxprotocol.daxp_core_test";

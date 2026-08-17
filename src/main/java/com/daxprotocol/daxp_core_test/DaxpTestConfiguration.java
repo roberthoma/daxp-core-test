@@ -8,13 +8,17 @@ import org.daxprotocol.core.config.DaxpConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Properties;
+
 @Configuration
 public class DaxpTestConfiguration {
 
     @Bean
     DaxEngine  getDaxEngine() {
-      return new  DaxEngine(DaxpConfigFactory
-                        .createProperties("daxp.properties"));
+
+        Properties properties = DaxpConfigFactory
+                .createProperties("daxp.properties");
+      return new  DaxEngine(properties);
 
     }
 

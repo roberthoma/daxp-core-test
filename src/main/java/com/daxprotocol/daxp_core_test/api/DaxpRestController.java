@@ -19,13 +19,9 @@ public class DaxpRestController {
         params.forEach((s, s2) -> System.out.println(s+"=>"+s2));
         DaxMessage message;
         try {
-        //TODO create frame from params if body is null
-        DaxFrame reqFrame = daxEngine.getFrameParser().parseFrame(body);
-        DaxFrame respFrame = new DaxFrame();
 
-        respFrame.setPreamble(daxEngine.getPreambleFactory().createRespPreamble(reqFrame));
-
-        daxEngine.getHandlerRegistry().executor(reqFrame,respFrame);
+            DaxFrame respFrame = new DaxFrame();
+            daxEngine.execute(body,respFrame);
 
 
         return ResponseEntity.ok(  daxEngine.getFrameCodec().encode(respFrame));

@@ -21,7 +21,7 @@ public class CRMDaxpRegister {
     public static final int CUSTOMER_TOWN = 2005;
     public static final int CUSTOMER_TELEPHONE = 2006;
     public static final int CUSTOMER_TYPE = 2007;
-
+    public static final int CUSTOMER_MAP = 2050;
 
     public static final int CONTRACT_TAG = 3000;
     public static final int CONTRACT_ID = 3201;

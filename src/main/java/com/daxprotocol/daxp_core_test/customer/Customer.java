@@ -1,15 +1,16 @@
 package com.daxprotocol.daxp_core_test.customer;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.daxprotocol.daxp_core_test.contracts.Contract;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.annotation.DaxpField;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.daxprotocol.daxp_core_test.daxp.CRMDaxpRegister.*;
 
@@ -45,7 +46,23 @@ public class Customer {
     @DaxpField(tagId = CUSTOMER_TYPE)
     CustomerType type;
 
+
+    @DaxpField(tagId = CUSTOMER_MAP)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "customerId") // Tworzy klucz obcy w tabeli kontraktów, unikając tabeli pośredniczącej
+    @MapKeyColumn(name = "contractNo") // Kolumna w tabeli kontraktów przechowująca klucz z mapy (String)
+    Map<String, Contract> contractMap;
+
     public Customer(){
+        contractMap = new HashMap<>();
     }
+
+    public void addContract(Contract contract){
+        if(contractMap == null){
+            contractMap = new HashMap<>();
+        }
+        contractMap.put(contract.getContractNo(), contract);
+    }
+
 
 }
